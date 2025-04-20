@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 from azure.ai.projects.aio import AIProjectClient
-from azure.ai.projects.models import ThreadMessage
+from azure.ai.projects.models import ThreadMessage, FilePurpose
 
 from terminal_colors import TerminalColors as tc
 
@@ -73,7 +73,7 @@ class Utilities:
             file_path = Path(f"{prefix}{file}")
             self.log_msg_purple(f"Uploading file: {file_path}")
             
-            file_info = await project_client.agents.upload_file(file_path=file_path, purpose="assistants")
+            file_info = await project_client.agents.upload_file_and_poll(file_path=file_path, purpose=FilePurpose.AGENTS)
             file_ids.append(file_info.id)
 
         self.log_msg_purple("Creating the vector store")
